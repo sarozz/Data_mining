@@ -20,3 +20,8 @@ class LoginForm(FlaskForm):
                                  validators= [DataRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
+
+class SearchForm(FlaskForm):
+    video_url = StringField('video_url',
+                            validators= [DataRequired()])
+    submit = SubmitField('Search')

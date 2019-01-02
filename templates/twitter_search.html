@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+{% block body%}
+
+<!-- <div class="container" >
+
+<h2  style="color:orange; margin-left: 500px; margin-top: 15px">Search results</h2><h6 style="color: orange; margin-left:500px;"> from {{name}}</h6>
+</div>
+
+
+<div class="row">
+    <div class="col-md-2" style="color:white">
+      <div class="alert alert-success" role="alert">
+        <h6 style="color: red"> <center> Profile </center></h6>
+        <hr>
+        {{owner}}
+<hr>
+<p>  {{bio}}</p>
+</div>
+  </div>
+  </div>
+  <div class="alert alert-secondary" role="alert">
+    <p >{{items}}
+</div> -->
+
+<div class="container-fluid">
+  <div class="container">
+  <h2  style="color:orange; margin-left: 170px;">Search results</h2><h6 style="color:orange; margin-left: 170px">from {{name}}</h6>
+  </div>
+  <div class="row">
+    <div class="col-sm-2 alert alert-success" style="margin-left:20px margin-top:50px">
+      <p>Profile</p>
+      <hr>
+    <h6>{{owner}}</h6>
+      <hr>
+      <p> {{bio}}</p>
+    </div>
+    <div class="col-sm-9 alert alert-secondary" style="margin-left:35px;width:50px;">
+    <p> {{items}} </p>
+    <hr>
+    </div>
+  </div>
+</div>
+{% endblock%}

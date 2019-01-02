@@ -1,12 +1,40 @@
-{% extends 'layout.html'%}
+{% extends 'layout.html' %}
 
 {% block body %}
-<div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img class="d-block w-100" src="" alt="First slide">
+<style>
+.btn-default{
+    background: orange;
+    padding-left: 2px;
+    font-size: 20px;
+    font-size: 15px;
+  }
+</style>
+<body style="background: #202a3f">
+<div class="container" style="width: 100%; margin-top: 70px;">
+  <h2 style="color: Orange">
+    Paste URL
+  </h2>
+<form method="POST" action="">
+  {{ form.hidden_tag() }}
+  <fieldset class="form-group">
+    <div class="form-group">
+                          {% if form.video_url.errors %}
+                              {{ form.video_url(class="form-control form-control-lg is-invalid") }}
+                              <div class="invalid-feedback">
+                                  {% for error in form.video_url.errors %}
+                                      <span>{{ error }}</span>
+                                  {% endfor %}
+                              </div>
+                          {% else %}
+                              {{ form.video_url(class="form-control form-control-lg") }}
+                          {% endif %}
     </div>
-</div>
+  <div class="form-group" style="margin-left: 2px">
+    {{ form.submit(class="btn btn-default") }}
+  </div>
 </div>
 
-{% endblock %}
+</div>
+</div>
+</body>
+{% endblock body %}
