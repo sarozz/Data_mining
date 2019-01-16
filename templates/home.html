@@ -14,9 +14,9 @@
   <h2 style="color: Orange">
     Paste URL
   </h2>
+  <h5 style="color:whitesmoke">YouTube, Twitter or Facebook </h5>
 <form method="POST" action="">
-  {{ form.hidden_tag() }}
-  <fieldset class="form-group">
+  {{ form.hidden_tag() }}  <fieldset class="form-group">
     <div class="form-group">
                           {% if form.video_url.errors %}
                               {{ form.video_url(class="form-control form-control-lg is-invalid") }}

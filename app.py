@@ -74,7 +74,7 @@ def home():
                     #trigger youtube scrapping function
                 else:
                     #trigger facebook scrapping function
-                    name = site
+                    return render_template('facebook_search.html', name=name)
             elif count == 1:
                 items =    []
                 imp,was = url.split('.')
