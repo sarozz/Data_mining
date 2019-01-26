@@ -6,11 +6,12 @@ from forms import RegistrationForm, LoginForm, SearchForm
 import csv
 import pandas as pd
 from pprint import pprint
-from apiclient.discovery import build
+from googleapiclient.discovery import build
 import warnings
 from bs4 import BeautifulSoup
 import urllib.request
 import requests
+# import random
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '18871a99bd42fd0dfb4b7909d9c5c7f309'
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
@@ -47,7 +48,7 @@ def home():
             if count == 2:
                 waste,site,tags = url.split('.')
                 if site == "youtube":
-                    api_key = "AIzaSyDuyO7-bZvAdsjQiWv8yw7350O8UX1mgzs"
+                    api_key = "AIzaSyDOw-hG4kvRwN5A4SHBipMhn7uBny16Ot4"
                     youtube = build('youtube', 'v3', developerKey = api_key)
                     waste,video_id = url.split('=')
                     results = youtube.commentThreads().list(
@@ -61,6 +62,18 @@ def home():
 
                     #print(len(results))
                     items=None
+                    items=results["items"]
+                    comments = []
+                    name = str(video_id)
+                    for item in items:
+                        comment = item["snippet"]["topLevelComment"]["snippet"]["textDisplay"]
+                        comments .append(comment)
+                    df = pd.DataFrame(comments)
+                    # with open('./youtube_rabi.csv','r',encoding='utf-8'):
+                    #     writer= csv.writer(writeFile)
+                    #     for i in comments:
+                    #         writer.writterow(i)
+                    df.to_csv(name +'_rabi.csv')
                     return render_template('youtube_search.html', name=site,items=results["items"])
 
                     # for items in results["items"]:
