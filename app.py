@@ -11,6 +11,7 @@ import warnings
 from bs4 import BeautifulSoup
 import urllib.request
 import requests
+import re
 # import random
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '18871a99bd42fd0dfb4b7909d9c5c7f309'
@@ -69,11 +70,30 @@ def home():
                         comment = item["snippet"]["topLevelComment"]["snippet"]["textDisplay"]
                         comments .append(comment)
                     df = pd.DataFrame(comments)
+                    # for i in comments:
+                    #     value=i
+                    #     value=re.sub(r'https?:\/\/.*[\r\n]*','',value)
+                    #     # value=re.sub(r'pic?.*','',value)
+                    #     value=re.sub(r"[a-zA-z.'#0-9@,:?'\u200b\u200c\u200d!/&~-]",'',value)
+                    #     value=re.sub(r'[""“”()’:;]','',value)
+                    #     value=' '.join(value.split())
+                    #     data=[]
+                    #     if value:
+                    #         value=value.split("।")
+                    #         for i in value:
+                    #             if not i:
+                    #                 pass
+                    #             else:
+                    #                 data.append(i)
                     # with open('./youtube_rabi.csv','r',encoding='utf-8'):
                     #     writer= csv.writer(writeFile)
                     #     for i in comments:
                     #         writer.writterow(i)
-                    df.to_csv(name +'_rabi.csv')
+                    with open('youtube_data.csv', 'a',encoding="utf-8") as writeFile:
+                        writer = csv.writer(writeFile)
+                        for i in comments:
+                            writer.writerow([i])
+                    # df.to_csv(name +'_rabi.csv')
                     return render_template('youtube_search.html', name=site,items=results["items"])
 
                     # for items in results["items"]:
@@ -95,15 +115,42 @@ def home():
                 #trigger twitter scrapping function
                 name = sitee
                 url = form.video_url.data
-                thepage = urllib.request.urlopen(url)
-                soup = BeautifulSoup(thepage,"html.parser")
-                owner = soup.title.text
-                bio_raw = soup.find('p', class_ = "ProfileHeaderCard-bio u-dir")
-                bio = bio_raw.text
-                for all in soup.find_all('p', class_="TweetTextSize TweetTextSize--normal js-tweet-text tweet-text"):
-                    tweets = all.text
-                    items.append(tweets)
-                return render_template('twitter_search.html',owner=owner, name = sitee, bio = bio, url=url, items=items)
+                response = None
+                try:
+                    response = requests.get(url)
+                except Exception as e:
+                    print(repr(e))
+                # thepage = urllib.request.urlopen(url)
+                # soup = BeautifulSoup(thepage,"html.parser")
+                # owner = soup.title.text
+                # bio_raw = soup.find('p', class_ = "ProfileHeaderCard-bio u-dir")
+                # bio = bio_raw.text
+                # for all in soup.find_all('p', class_="TweetTextSize TweetTextSize--normal js-tweet-text tweet-text"):
+                #     tweets = all.text
+                #     items.append(tweets)
+                soup = BeautifulSoup(response.text, 'html.parser')
+                content = soup.findAll('div',{'class':'js-tweet-text-container'})
+                content = soup.findAll('p',{'class':'TweetTextSize js-tweet-text tweet-text'})
+                data=[]
+                for i in content:
+                    value=i.text
+                    value=re.sub(r'https?:\/\/.*[\r\n]*','',value)
+                    value=re.sub(r'pic?.*','',value)
+                    value=re.sub(r"[a-zA-z.'#0-9@,:?'\u200b\u200c\u200d!/&~-]",'',value)
+                    value=re.sub(r'[""“”()’:;]','',value)
+                    value=' '.join(value.split())
+                    if value:
+                        value=value.split("।")
+                        for i in value:
+                            if not i:
+                                pass
+                            else:
+                                data.append(i)
+                with open('twitter_data.csv', 'a',encoding="utf-8") as writeFile:
+                    writer = csv.writer(writeFile)
+                    for i in data:
+                        writer.writerow([i])
+                return render_template('twitter_search.html',name = sitee)
 
 
 
